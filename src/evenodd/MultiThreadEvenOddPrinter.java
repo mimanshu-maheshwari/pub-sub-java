@@ -2,7 +2,7 @@ package evenodd;
 
 public class MultiThreadEvenOddPrinter {
 
-  private int pointer;
+  private volatile int pointer;
 
   private final int LIMIT;
 
