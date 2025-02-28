@@ -2,6 +2,14 @@ package evenodd;
 
 public class MultiThreadEvenOddPrinter {
 
+  public static void multiThreadedEvenOddPrinter() {
+    MultiThreadEvenOddPrinter printer = new MultiThreadEvenOddPrinter(1, 10);
+    Thread evenThread = new Thread(printer::printEven, "Even Thread");
+    Thread oddThread = new Thread(printer::printOdd, "Odd Thread");
+    evenThread.start();
+    oddThread.start();
+  }
+
   private volatile int pointer;
 
   private final int LIMIT;
