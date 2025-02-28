@@ -7,10 +7,10 @@ public class Producer<T> {
     this.sharedResource = sharedResource;
   }
   public void produce(T data) {
-    synchronized (sharedResource){
+    synchronized (sharedResource) {
       if(this.sharedResource.hasData()) {
         try{
-          System.out.println("Waiting to produce data in " + Thread.currentThread().getName());
+          System.out.println("INFO: Waiting to produce data in " + Thread.currentThread().getName());
           this.sharedResource.wait();
         } catch (InterruptedException e){
           Thread.currentThread().interrupt();
@@ -18,7 +18,7 @@ public class Producer<T> {
       }
       var message = new Message<T>(data);
       this.sharedResource.setMessage(message);
-      System.out.println("Produced value: " + message);
+      System.out.println("INFO: Produced value: " + message);
       this.sharedResource.notify();
     }
   }
