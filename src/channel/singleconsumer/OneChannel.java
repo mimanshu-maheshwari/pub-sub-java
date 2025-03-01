@@ -1,5 +1,6 @@
 package channel.singleconsumer;
 
+import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
 /**
@@ -63,6 +64,45 @@ public class OneChannel<T> {
     Thread t2 = new Thread(receiver, "Consumer Thread");
     t1.start();
     t2.start();
+  }
+
+  public static void singleConsumerChannelMultiThreads() {
+    final var channel = new OneChannel<Integer>();
+    final var producer = channel.getProducer();
+    final var consumer = channel.getConsumer();
+
+    Runnable generate = () -> {
+      IntStream.range(1, 11).forEach(v -> {
+        try {
+          Thread.sleep(1000);
+          producer.produce(v);
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+        }
+      });
+      producer.complete();
+    };
+
+    Runnable receiver = () -> {
+      Integer val;
+      while ((val = consumer.consume()) != null) {
+        try {
+          System.out.println(val);
+          Thread.sleep(5000);
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+        }
+      }
+    };
+
+    try (var executor = Executors.newFixedThreadPool(8)) {
+      executor.submit(receiver);
+      executor.submit(receiver);
+      executor.submit(receiver);
+      executor.submit(receiver);
+      executor.submit(generate);
+      executor.submit(generate);
+    }
   }
 
 }

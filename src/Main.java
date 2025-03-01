@@ -1,12 +1,12 @@
 
-import static channel.singleconsumer.OneChannel.singleConsumerChannel;
-import static evenodd.MultiThreadEvenOddPrinter.multiThreadedEvenOddPrinter;
+import static channel.singleconsumer.OneChannel.singleConsumerChannelMultiThreads;
 
 public class Main {
 
   public static void main(String[] args) {
 //    multiThreadedEvenOddPrinter();
-    singleConsumerChannel();
+//    singleConsumerChannel();
+    singleConsumerChannelMultiThreads();
   }
 
 

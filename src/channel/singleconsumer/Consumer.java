@@ -24,7 +24,7 @@ public class Consumer<T> {
       }
       var message = this.sharedResource.getMessage();
       System.out.println("INFO: Consumed message: " + message);
-      this.sharedResource.notify();
+      this.sharedResource.notifyAll();
       return message.data();
     }
   }

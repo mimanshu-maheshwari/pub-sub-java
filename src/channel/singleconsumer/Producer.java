@@ -27,7 +27,7 @@ public class Producer<T> {
       var message = new Message<T>(data);
       this.sharedResource.setMessage(message);
       System.out.println("INFO: Produced value: " + message);
-      this.sharedResource.notify();
+      this.sharedResource.notifyAll();
     }
   }
 
