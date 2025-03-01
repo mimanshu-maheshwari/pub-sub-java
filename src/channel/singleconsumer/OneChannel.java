@@ -35,19 +35,27 @@ public class OneChannel<T> {
     final var producer = channel.getProducer();
     final var consumer = channel.getConsumer();
 
-    Runnable generate = () -> IntStream.range(1, 11).forEach(v -> {
-      try {
-        Thread.sleep(1000);
-        producer.produce(v);
-      } catch (InterruptedException e) {
-        Thread.currentThread().interrupt();
-      }
-    });
+    Runnable generate = () -> {
+      IntStream.range(1, 11).forEach(v -> {
+        try {
+          Thread.sleep(1000);
+          producer.produce(v);
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+        }
+      });
+      producer.complete();
+    };
 
     Runnable receiver = () -> {
       Integer val;
       while ((val = consumer.consume()) != null) {
-        System.out.println(val);
+        try {
+          System.out.println(val);
+          Thread.sleep(2000);
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+        }
       }
     };
 

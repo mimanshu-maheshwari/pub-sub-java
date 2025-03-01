@@ -10,7 +10,11 @@ public class Consumer<T> {
 
   public T consume() {
     synchronized (sharedResource){
+      // process data
       while(!this.sharedResource.hasData()) {
+        if (this.sharedResource.isDone()) {
+          return null; // Stop consuming if producer is done
+        }
         try{
           System.out.println("INFO: Waiting to consume data in " + Thread.currentThread().getName());
           this.sharedResource.wait();
